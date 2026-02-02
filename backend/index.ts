@@ -1,1 +1,2 @@
-   export { default } from './hono';
+import "hono";
+export { default } from "./hono";

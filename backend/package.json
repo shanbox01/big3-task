@@ -13,7 +13,7 @@
     "superjson": "^2.2.6",
     "zod": "^3.23.8",
     "@trpc/server": "^11.8.1"
-    }
+    },
     "devDependencies": {
       "typescript": "~5.9.2"
     }

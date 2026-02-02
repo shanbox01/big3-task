@@ -549,6 +549,10 @@ export default function NextActionScreen() {
       setShowTop3Reveal(true);
     },
     onError: (error) => {
+      // #region agent log
+      const errData = (error as { message?: string; data?: unknown; cause?: unknown; shape?: { message?: string } });
+      fetch('http://127.0.0.1:7242/ingest/f699d6fc-250e-496c-8428-c015d229e6ae',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/index.tsx:onboardingMutation.onError',message:'Onboarding AI error',data:{message:errData.message,shapeMessage:errData.shape?.message,data:errData.data,cause:String(errData.cause)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,C,E'})}).catch(()=>{});
+      // #endregion
       console.error('[Onboarding] AI Error:', error);
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
@@ -598,11 +602,33 @@ export default function NextActionScreen() {
           currentStepIdx++;
         }
       }, 150);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/f699d6fc-250e-496c-8428-c015d229e6ae',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/index.tsx:processMutation.mutationFn',message:'Calling ai.generateTasks (process)',data:{taskTextsCount:taskTexts.length,isInitialLoad},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
       const result = await trpcClient.ai.generateTasks.mutate({
         taskTexts,
         isInitialLoad,
       });
       return { result, isInitialLoad };
+    },
+    onError: (error) => {
+      // #region agent log
+      const errData = (error as { message?: string; data?: unknown; cause?: unknown; shape?: { message?: string } });
+      fetch('http://127.0.0.1:7242/ingest/f699d6fc-250e-496c-8428-c015d229e6ae',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/index.tsx:processMutation.onError',message:'Process AI error',data:{message:errData.message,shapeMessage:errData.shape?.message,data:errData.data,cause:String(errData.cause)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D,A,E'})}).catch(()=>{});
+      // #endregion
+      console.error('[Process] AI Error:', error);
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+        progressInterval.current = null;
+      }
+      setAiProgress(0);
+      setStreamingLines([]);
+      setShowExpandedStream(false);
+      Alert.alert(
+        'Something went wrong',
+        'Could not generate your plan. Please check your connection and try again.',
+        [{ text: 'OK' }]
+      );
     },
     onSuccess: ({ result: data, isInitialLoad }) => {
       if (progressInterval.current) {

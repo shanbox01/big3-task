@@ -553,6 +553,7 @@ export default function NextActionScreen() {
       const errData = (error as { message?: string; data?: unknown; cause?: unknown; shape?: { message?: string } });
       fetch('http://127.0.0.1:7242/ingest/f699d6fc-250e-496c-8428-c015d229e6ae',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/index.tsx:onboardingMutation.onError',message:'Onboarding AI error',data:{message:errData.message,shapeMessage:errData.shape?.message,data:errData.data,cause:String(errData.cause)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,C,E'})}).catch(()=>{});
       // #endregion
+      console.error('[Onboarding] Error shape:', (error as { data?: unknown }).data);
       console.error('[Onboarding] AI Error:', error);
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
@@ -616,6 +617,7 @@ export default function NextActionScreen() {
       const errData = (error as { message?: string; data?: unknown; cause?: unknown; shape?: { message?: string } });
       fetch('http://127.0.0.1:7242/ingest/f699d6fc-250e-496c-8428-c015d229e6ae',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'app/index.tsx:processMutation.onError',message:'Process AI error',data:{message:errData.message,shapeMessage:errData.shape?.message,data:errData.data,cause:String(errData.cause)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D,A,E'})}).catch(()=>{});
       // #endregion
+      console.error('[Onboarding] Error shape:', (error as { data?: unknown }).data);
       console.error('[Process] AI Error:', error);
       if (progressInterval.current) {
         clearInterval(progressInterval.current);

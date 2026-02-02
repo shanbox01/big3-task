@@ -22,11 +22,24 @@ const getBaseUrl = () => {
   return url;
 };
 
+const customFetch: typeof fetch = async (input, init) => {
+  const res = await fetch(input, init);
+  res
+    .clone()
+    .text()
+    .then((raw) => {
+      console.warn("[tRPC] Raw response:", raw?.slice?.(0, 500) ?? raw);
+    })
+    .catch(() => {});
+  return res;
+};
+
 export const trpcClient = trpc.createClient({
   links: [
     httpLink({
       url: `${getBaseUrl()}/api/trpc`,
       transformer: superjson,
+      fetch: customFetch,
     }),
   ],
 });

@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import * as z from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../create-context";
+import { createTRPCRouter, publicProcedure } from "../create-context.js";
 
 const taskItemSchema = z.object({
   text: z.string(),

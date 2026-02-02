@@ -1,6 +1,6 @@
-import { createTRPCRouter } from "./create-context";
-import { aiRouter } from "./routes/ai";
-import { exampleRouter } from "./routes/example";
+import { createTRPCRouter } from "./create-context.js";
+import { aiRouter } from "./routes/ai.js";
+import { exampleRouter } from "./routes/example.js";
 
 export const appRouter = createTRPCRouter({
   example: exampleRouter,

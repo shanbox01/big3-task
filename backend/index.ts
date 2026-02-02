@@ -1,2 +1,2 @@
 import "hono";
-export { default } from "./hono";
+export { default } from "./hono.js";

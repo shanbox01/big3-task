@@ -28,9 +28,11 @@ const customFetch: typeof fetch = async (input, init) => {
     .clone()
     .text()
     .then((raw) => {
-      console.warn("[tRPC] Raw response:", raw?.slice?.(0, 500) ?? raw);
+      console.log("[tRPC] Raw response:", raw ?? "(empty)");
     })
-    .catch(() => {});
+    .catch((err) => {
+      console.log("[tRPC] Raw response read error:", err);
+    });
   return res;
 };
 
